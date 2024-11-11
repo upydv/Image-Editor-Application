@@ -2,7 +2,7 @@
 This Image Editor application provides various features to edit and transform images. With easy-to-use tools, users can resize images, convert them to PDF, apply filters, and much more.
 
 Features
-Image Resize
+<b> Image Resize </b>
 
 Resize images to specified dimensions while maintaining aspect ratio or custom dimensions.
 Supports standard resolutions for various uses (web, print, mobile, etc.).
