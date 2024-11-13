@@ -1,5 +1,8 @@
 import React from 'react';
-import Upload from './Upload'
+import Upload from './Upload';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
 function Sketching() {
     const pageStyle = {
         display: 'flex',
@@ -27,6 +30,22 @@ function Sketching() {
         marginBottom: '20px'
     };
 
+    const { filename } = useParams();
+    let profileImage = `https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/uploads/${filename}`;
+
+    const fun_Skeching = async () => {
+        try {
+            const response = await axios.post('https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/api/sketch', {
+                imageUrl: profileImage
+            });
+            alert("Sketched image saved");
+            console.log(response.data.message);
+        } catch (error) {
+            console.error("Error in sketching:", error);
+            alert(error);
+        }
+    };
+
     return (
         <div style={pageStyle}>
             <div style={containerStyle}>
@@ -35,7 +54,11 @@ function Sketching() {
                     Pencils are often used for shading and soft lines, while pens provide sharp, defined edges. This technique allows
                     artists to explore textures, depth, and intricate details, making each sketch unique and expressive.
                 </p>
-                <Upload/>
+                <Upload />
+                <img src={profileImage} alt="Not available" style={{ width: "50%", height: "50%" }} />
+            </div>
+            <div>
+                <button onClick={fun_Skeching}>Sketching It</button>
             </div>
         </div>
     );

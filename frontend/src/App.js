@@ -11,6 +11,9 @@ function App() {
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/sketching' element={<Sketching/>}/>
+          <Route path='/sketching/uploads/:filename' element={<Sketching/>}/>
+
+      
           {/* <Route path='/create' element={<AddEmployee/>}/>
           
           <Route path='/update' element={<Update/>}/>

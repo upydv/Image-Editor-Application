@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Upload() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
-  
+  const navigate = useNavigate(); // Initialize navigate
+
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]); // Set the selected file
   };
@@ -29,11 +31,14 @@ function Upload() {
       });
 
       if (response.status === 200) {
-        setProfileImage(response.data.filePath);
+        const filePath = response.data.filePath;
+        setProfileImage(filePath);
         alert(`Successfully Uploaded.`);
+        
+        // Navigate to the new URL with the profile image path
+        navigate(`/sketching/${filePath}`);
       }
-    } catch (error) 
-    {
+    } catch (error) {
       const errorMessage = error.response ? error.response.data : error.message;
       alert(`Upload Failed: ${errorMessage}`);
       console.error('Error uploading', errorMessage);
@@ -53,8 +58,12 @@ function Upload() {
         <button type="submit">Upload</button>
       </form>
 
-      {/* Display the uploaded profile image if available */}
-      {profileImage && <div>Profile Image Path: {profileImage}</div>}
+      {/* Display the uploaded profile image path if available */}
+      {profileImage && (
+        <div>
+          <p>Profile Image Path: {profileImage}</p>
+        </div>
+      )}
     </div>
   );
 }

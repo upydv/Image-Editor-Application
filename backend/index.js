@@ -2,26 +2,28 @@ const express = require('express');
 const fs = require('fs');
 const cors = require('cors');
 const multer = require('multer');
+const { exec } = require('child_process');
 const PORT = process.env.PORT || 5000;
 
-// Ensure the uploads directory exists
-const path = './uploads';
-if (!fs.existsSync(path)) {
-    fs.mkdirSync(path);
-}
+// Define the uploads directory path
+const UPLOADS_PATH = './uploads';
 
+// Ensure the uploads directory exists
+if (!fs.existsSync(UPLOADS_PATH)) {
+    fs.mkdirSync(UPLOADS_PATH);
+}
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 // Serve static files for uploaded images
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(UPLOADS_PATH));
 
 // Set up Multer for file uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './uploads'); // Ensure the uploads folder exists
+        cb(null, UPLOADS_PATH); // Use the defined UPLOADS_PATH
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname);
@@ -34,7 +36,6 @@ const upload = multer({ storage: storage });
 app.get("/", (req, res) => {
     res.send("<h1>Home is here</h1>");
 });
-
 
 // Route for file upload
 app.post("/upload", (req, res) => {
@@ -53,7 +54,7 @@ app.post("/upload", (req, res) => {
     });
 });
 
-
+// Route to serve specific uploaded files
 app.get('/uploads/:fileName', (req, res) => {
     const filePath = `${UPLOADS_PATH}/${req.params.fileName}`;
     res.sendFile(filePath, (err) => {
@@ -63,7 +64,23 @@ app.get('/uploads/:fileName', (req, res) => {
     });
 });
 
+// Route to execute sketching script
+app.post('/api/sketch', (req, res) => {
+    const { imageUrl } = req.body;
+
+    exec(`python3 main.py ${imageUrl}`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${error.message}`);
+            return res.status(500).json({ message: "Error in sketching process" });
+        }
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).json({ message: stderr });
+        }
+        console.log(stdout);  // Output from Python script
+        res.json({ message: "Sketching completed successfully" });
+    });
+});
+
 // Start the server
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
-
-
