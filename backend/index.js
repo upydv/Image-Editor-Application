@@ -7,10 +7,15 @@ const PORT = process.env.PORT || 5000;
 
 // Define the uploads directory path
 const UPLOADS_PATH = './uploads';
+const SKETCHED_PATH ='./sketched_pic'
 
 // Ensure the uploads directory exists
 if (!fs.existsSync(UPLOADS_PATH)) {
     fs.mkdirSync(UPLOADS_PATH);
+}
+
+if (!fs.existsSync(SKETCHED_PATH)) {
+    fs.mkdirSync(SKETCHED_PATH);
 }
 
 const app = express();
@@ -19,6 +24,7 @@ app.use(cors());
 
 // Serve static files for uploaded images
 app.use('/uploads', express.static(UPLOADS_PATH));
+app.use('/sketched_pic', express.static(SKETCHED_PATH));
 
 // Set up Multer for file uploads
 const storage = multer.diskStorage({
@@ -82,5 +88,15 @@ app.post('/api/sketch', (req, res) => {
     });
 });
 
+
+// Route to serve specific sketched files
+app.get('/sketched_pic/:fileName', (req, res) => {
+    const filePath = path.join(SKETCHED_PATH, req.params.fileName);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            res.status(404).send({ error: 'File not found' });
+        }
+    });
+});
 // Start the server
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
