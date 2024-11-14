@@ -42,7 +42,8 @@
     max-width: 35%; /* Adjust width so two images fit in one row */
     height: auto;
     border: 2px solid #ddd;
-    border-radius: 8px;
+    border-radius: 8px solid red;
+    border: 2px solid red
 }
 
 .button {

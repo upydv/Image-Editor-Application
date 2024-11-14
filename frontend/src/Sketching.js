@@ -1,5 +1,6 @@
 import React from 'react';
 import Upload from './Upload';
+import Header from './Header';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './Sketching.css';
@@ -22,7 +23,33 @@ function Sketching() {
         }
     };
 
+    const downloadImage = async () => {
+        try {
+            const response = await fetch(SKETCHED_PATH);
+            
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `sketched_${filename}`;  // Specify the filename for the download
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);  // Clean up the object URL
+            } else {
+                alert("Sketched image is not available yet. Please try again later.");
+            }
+        } catch (error) {
+            console.error("Error downloading the image:", error);
+            alert("There was an error downloading the image.");
+        }
+    };
+    
+
     return (
+        <>
+        <Header/>
         <div className="page">
             <div className="container">
                 <p className="description">
@@ -39,7 +66,11 @@ function Sketching() {
                 <button onClick={fun_Skeching} className="button">Sketching It</button>
                 <img src={SKETCHED_PATH} alt="Sketched Result" className="image" />
             </div>
+            <button onClick={downloadImage} className="button">
+                Download Sketched Image
+            </button>
         </div>
+        </>
     );
 }
 
