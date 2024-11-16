@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './Upload.css';  // Import the CSS file
 
 
-function Upload() {
+function Upload({routingPlace}) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
   // const [upload, setUpload] =useState(false)
@@ -37,7 +37,8 @@ function Upload() {
         setProfileImage(filePath);
         alert(`Successfully Uploaded.`);
         // setUpload(true);
-        navigate(`/sketching/${filePath}`);
+        navigate(`/${routingPlace}/${filePath}`);
+
       }
     } catch (error) {
       const errorMessage = error.response ? error.response.data : error.message;
