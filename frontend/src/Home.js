@@ -78,6 +78,15 @@ function Home() {
               </div>
             </Link>
           </div>
+          <div>
+            <Link to={'/Blackandwhite'}>
+              <div className="card">
+                <div className="icon">🌫️</div>
+                <h3>Blackandwhite</h3>
+                <p>Blur the background of an image to emphasize the subject.</p>
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

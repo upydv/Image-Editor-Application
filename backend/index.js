@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 5000;
 // Define the uploads directory path
 const UPLOADS_PATH = './uploads';
 const SKETCHED_PATH ='./sketched_pic'
+const BLACKANDWHITE_PATH ='./Black_White_Images'
+
 
 // Ensure the uploads directory exists
 if (!fs.existsSync(UPLOADS_PATH)) {
@@ -17,6 +19,9 @@ if (!fs.existsSync(UPLOADS_PATH)) {
 if (!fs.existsSync(SKETCHED_PATH)) {
     fs.mkdirSync(SKETCHED_PATH);
 }
+if (!fs.existsSync(BLACKANDWHITE_PATH)) {
+    fs.mkdirSync(BLACKANDWHITE_PATH);
+}
 
 const app = express();
 app.use(express.json());
@@ -25,6 +30,7 @@ app.use(cors());
 // Serve static files for uploaded images
 app.use('/uploads', express.static(UPLOADS_PATH));
 app.use('/sketched_pic', express.static(SKETCHED_PATH));
+app.use('/Black_White_Images', express.static(BLACKANDWHITE_PATH));
 
 // Set up Multer for file uploads
 const storage = multer.diskStorage({
@@ -74,7 +80,7 @@ app.get('/uploads/:fileName', (req, res) => {
 app.post('/api/sketch', (req, res) => {
     const { imageUrl } = req.body;
 
-    exec(`python3 main.py ${imageUrl}`, (error, stdout, stderr) => {
+    exec(`python3 sketching.py ${imageUrl}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
             return res.status(500).json({ message: "Error in sketching process" });
@@ -88,10 +94,37 @@ app.post('/api/sketch', (req, res) => {
     });
 });
 
+// Black and white
+app.post('/api/blackandwhite', (req, res) => {
+    const { imageUrl } = req.body;
+
+    exec(`python3 blackandwhite.py ${imageUrl}`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${error.message}`);
+            return res.status(500).json({ message: "Error in Black and white process" });
+        }
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).json({ message: stderr });
+        }
+        console.log(stdout);  // Output from Python script
+        res.json({ message: "Black and white completed successfully" });
+    });
+});
+
 
 // Route to serve specific sketched files
 app.get('/sketched_pic/:fileName', (req, res) => {
     const filePath = path.join(SKETCHED_PATH, req.params.fileName);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            res.status(404).send({ error: 'File not found' });
+        }
+    });
+});
+
+app.get('/Blackandwhite/:fileName', (req, res) => {
+    const filePath = path.join(BLACKANDWHITE_PATH, req.params.fileName);
     res.sendFile(filePath, (err) => {
         if (err) {
             res.status(404).send({ error: 'File not found' });
