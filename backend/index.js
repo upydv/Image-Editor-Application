@@ -80,7 +80,7 @@ app.get('/uploads/:fileName', (req, res) => {
 app.post('/api/sketch', (req, res) => {
     const { imageUrl } = req.body;
 
-    exec(`python3 main.py ${imageUrl}`, (error, stdout, stderr) => {
+    exec(`python3 sketching.py ${imageUrl}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
             return res.status(500).json({ message: "Error in sketching process" });
