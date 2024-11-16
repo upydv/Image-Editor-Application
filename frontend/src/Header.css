@@ -1,0 +1,41 @@
+/* Container for the header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+/* Each header item (icon) container */
+.header-item {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+/* Link style */
+.header-link {
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+
+/* Icon style */
+.icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Icon label (name) that will be shown on hover */
+.icon-label {
+    display: none;
+    font-size: 1rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Show the label on hover */
+.header-item:hover .icon-label {
+    display: block;
+}
