@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Upload from './Upload';
 import Header from './Header';
 import { useParams } from 'react-router-dom';
@@ -6,6 +6,7 @@ import axios from 'axios';
 import './Sketching.css';
 
 function Sketching() {
+    const [flag, setFlag] = useState(false);
     const { filename } = useParams();
     const profileImage = `https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/uploads/${filename}`;
     const SKETCHED_PATH = `https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/sketched_pic/sketched_${filename}`;
@@ -17,6 +18,7 @@ function Sketching() {
             });
             alert("Sketched image saved");
             console.log(response.data.message);
+            setFlag(true)
         } catch (error) {
             console.error("Error in sketching:", error);
             alert(error);
@@ -64,11 +66,15 @@ function Sketching() {
             <div className="image-row">
                 <img src={profileImage} alt="Uploaded Preview" className="image" />
                 <button onClick={fun_Skeching} className="button">Sketching It</button>
-                <img src={SKETCHED_PATH} alt="Sketched Result" className="image" />
+                {flag && (
+        <img src={SKETCHED_PATH} alt="Sketched Result" className="image" />
+      )}
+                {/* <img src={SKETCHED_PATH} alt="Sketched Result" className="image" /> */}
             </div>
-            <button onClick={downloadImage} className="button">
-                Download Sketched Image
-            </button>
+            { flag &&(
+                <button onClick={downloadImage} className="button">
+                    Download Sketched Image
+                </button>)}
         </div>
         </>
     );
