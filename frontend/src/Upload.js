@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Upload.css';  // Import the CSS file
 
+
 function Upload() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
+  // const [upload, setUpload] =useState(false)
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
@@ -34,6 +36,7 @@ function Upload() {
         const filePath = response.data.filePath;
         setProfileImage(filePath);
         alert(`Successfully Uploaded.`);
+        // setUpload(true);
         navigate(`/sketching/${filePath}`);
       }
     } catch (error) {
@@ -47,11 +50,13 @@ function Upload() {
     <div className="UploadContainer">
       <label>Upload your Profile Picture</label>
       <form className="UploadImage" onSubmit={handleSubmit} encType="multipart/form-data">
-        <input
-          type="file"
-          name="profileImage"
-          onChange={handleFileChange}
-        />
+      <input
+        type="file"
+        name="profileImage"
+        accept="image/*"
+        onChange={handleFileChange}
+      />
+
         <button type="submit">Upload</button>
       </form>
     </div>
