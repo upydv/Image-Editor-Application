@@ -21,6 +21,10 @@ Includes options for line thickness and intensity to mimic realistic sketch effe
 Automatically adjust colors, sharpness, and lighting to improve image quality.
 Manual options to adjust contrast, saturation, brightness, and clarity.
 
+<h3>Remove Background</h3>
+Instantly remove image backgrounds in seconds with a single click. Say goodbye to tedious editing—just upload your photo, 
+and let our tool do the rest. Get a clean, professional cutout in no time!
+
 <h3>Background Blur</h3>
 
 Blur the background while keeping the subject in focus to create a depth-of-field effect.
