@@ -6,6 +6,12 @@ function Header() {
     return (
         <div className="header">
             <div className="header-item">
+                <Link to="/" className="header-link">
+                    <span className="icon">H</span>
+                    <h3 className="icon-label">Home</h3>
+                </Link>
+            </div>
+            <div className="header-item">
                 <Link to="/Resize" className="header-link">
                     <span className="icon">🔀</span>
                     <h3 className="icon-label">Image Resize</h3>

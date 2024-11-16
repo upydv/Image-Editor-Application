@@ -9,6 +9,9 @@ const PORT = process.env.PORT || 5000;
 const UPLOADS_PATH = './uploads';
 const SKETCHED_PATH ='./sketched_pic'
 const BLACKANDWHITE_PATH ='./Black_White_Images'
+const GRAYSCALE_PATH ='./Gray_Scale'
+const REMOVEBACKGROUND_PATH ='./RemoveBackground_image'
+
 
 
 // Ensure the uploads directory exists
@@ -22,6 +25,13 @@ if (!fs.existsSync(SKETCHED_PATH)) {
 if (!fs.existsSync(BLACKANDWHITE_PATH)) {
     fs.mkdirSync(BLACKANDWHITE_PATH);
 }
+if (!fs.existsSync(GRAYSCALE_PATH)) {
+    fs.mkdirSync(GRAYSCALE_PATH);
+}
+
+if (!fs.existsSync(REMOVEBACKGROUND_PATH)) {
+    fs.mkdirSync(REMOVEBACKGROUND_PATH);
+}
 
 const app = express();
 app.use(express.json());
@@ -31,6 +41,10 @@ app.use(cors());
 app.use('/uploads', express.static(UPLOADS_PATH));
 app.use('/sketched_pic', express.static(SKETCHED_PATH));
 app.use('/Black_White_Images', express.static(BLACKANDWHITE_PATH));
+app.use('/Gray_Scale', express.static(GRAYSCALE_PATH));
+app.use('/RemoveBackground_image', express.static(REMOVEBACKGROUND_PATH));
+
+
 
 // Set up Multer for file uploads
 const storage = multer.diskStorage({
@@ -113,6 +127,42 @@ app.post('/api/blackandwhite', (req, res) => {
 });
 
 
+app.post('/api/Grayscale', (req, res) => {
+    const { imageUrl } = req.body;
+
+    exec(`python3 grayscale.py ${imageUrl}`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${error.message}`);
+            return res.status(500).json({ message: "Error in Black and white process" });
+        }
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).json({ message: stderr });
+        }
+        console.log(stdout);  // Output from Python script
+        res.json({ message: "Black and white completed successfully" });
+    });
+});
+
+
+app.post('/api/RemoveBackground', (req, res) => {
+    const { imageUrl } = req.body;
+
+    exec(`python3 RemoveBackground.py ${imageUrl}`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${error.message}`);
+            return res.status(500).json({ message: "Error in Black and white process" });
+        }
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).json({ message: stderr });
+        }
+        console.log(stdout);  // Output from Python script
+        res.json({ message: "Black and white completed successfully" });
+    });
+});
+
+
 // Route to serve specific sketched files
 app.get('/sketched_pic/:fileName', (req, res) => {
     const filePath = path.join(SKETCHED_PATH, req.params.fileName);
@@ -125,6 +175,24 @@ app.get('/sketched_pic/:fileName', (req, res) => {
 
 app.get('/Blackandwhite/:fileName', (req, res) => {
     const filePath = path.join(BLACKANDWHITE_PATH, req.params.fileName);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            res.status(404).send({ error: 'File not found' });
+        }
+    });
+});
+
+app.get('/Grayscale/:fileName', (req, res) => {
+    const filePath = path.join(GRAYSCALE_PATH, req.params.fileName);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            res.status(404).send({ error: 'File not found' });
+        }
+    });
+});
+
+app.get('/RemoveBackground/:fileName', (req, res) => {
+    const filePath = path.join(REMOVEBACKGROUND_PATH, req.params.fileName);
     res.sendFile(filePath, (err) => {
         if (err) {
             res.status(404).send({ error: 'File not found' });
