@@ -38,6 +38,7 @@ function Upload({routingPlace}) {
         alert(`Successfully Uploaded.`);
         // setUpload(true);
         navigate(`/${routingPlace}/${filePath}`);
+
       }
     } catch (error) {
       const errorMessage = error.response ? error.response.data : error.message;
