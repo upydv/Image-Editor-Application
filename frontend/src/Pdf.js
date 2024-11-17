@@ -5,15 +5,15 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './Sketching.css';
 
-function BackgroundBlur() {
+function Pdf() {
     const [flag, setFlag] = useState(false);
     const { filename } = useParams();
     const profileImage = `https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/uploads/${filename}`;
-    const SAVE_PATH = `https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/Blur_Images/BackgroundBlur_${filename}`;
+    const SAVE_PATH = `https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/Converted_PDFs/converted_${filename}.pdf`;
 
     const Function = async () => {
         try {
-            const response = await axios.post('https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/api/BackgroundBlur', {
+            const response = await axios.post('https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/api/ImageToPDF', {
                 imageUrl: profileImage
             });
             alert("Grayscale image saved");
@@ -25,28 +25,29 @@ function BackgroundBlur() {
         }
     };
 
-    const downloadImage = async () => {
+    const downloadPDF = async () => {
         try {
             const response = await fetch(SAVE_PATH);
-            
+    
             if (response.ok) {
                 const blob = await response.blob();
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `Grayscale_${filename}`;  // Specify the filename for the download
+                link.download = `Document_${filename}.pdf`; // Specify the filename with a .pdf extension
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                URL.revokeObjectURL(url);  // Clean up the object URL
+                URL.revokeObjectURL(url); // Clean up the object URL
             } else {
-                alert("Sketched image is not available yet. Please try again later.");
+                alert("PDF file is not available yet. Please try again later.");
             }
         } catch (error) {
-            console.error("Error downloading the image:", error);
-            alert("There was an error downloading the image.");
+            console.error("Error downloading the PDF:", error);
+            alert("There was an error downloading the PDF.");
         }
     };
+    
     
 
     return (
@@ -61,23 +62,23 @@ function BackgroundBlur() {
                 </p>
             </div>
             <div className="upload-section">
-            <Upload routingPlace="BackgroundBlur" />
+            <Upload routingPlace="Pdf" />
             </div>
             <div className="image-row">
                 <img src={profileImage} alt="Uploaded Preview" className="image" />
-                <button onClick={Function} className="button">BackgroundBlur It</button>
+                <button onClick={Function} className="button">Grayscale It</button>
                 {flag && (
         <img src={SAVE_PATH} alt="Grayscale Result" className="image" />
       )}
                 {/* <img src={SAVE_PATH} alt="Sketched Result" className="image" /> */}
             </div>
             { flag &&(
-                <button onClick={downloadImage} className="button">
-                    Download Blur Image
+                <button onClick={downloadPDF} className="button">
+                    Download Grayscale Image
                 </button>)}
         </div>
         </>
     );
 }
 
-export default BackgroundBlur;
+export default Pdf;

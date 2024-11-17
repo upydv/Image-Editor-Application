@@ -29,7 +29,7 @@ def image_to_pdf(image_path, last_segment):
     width, height = image.size
     
     # Create a directory to save the PDF output
-    output_dir = "converted_pdfs"
+    output_dir = "Converted_PDFs"
     os.makedirs(output_dir, exist_ok=True)
     
     # Create a canvas to generate the PDF (letter page size is 8.5 x 11 inches)

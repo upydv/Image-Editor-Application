@@ -18,7 +18,7 @@ function Header() {
                 </Link>
             </div>
             <div className="header-item">
-                <Link to="/ImageToPDF" className="header-link">
+                <Link to="/Pdf" className="header-link">
                     <span className="icon">🔄</span>
                     <h3 className="icon-label">Image to PDF</h3>
                 </Link>

@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './Home';
 import Sketching from './Sketching';
 import Resize from './Resize';
-import PDF from './PDF';
+import Pdf from './Pdf';
 import Grayscale from './Grayscale';
 import Enhance from './Enhance';
 import RemoveBackground from './RemoveBackground';
@@ -25,8 +25,8 @@ function App() {
           <Route path='/Resize/uploads/:filename' element={<Resize />} />
 
           {/* Path for Image to PDF tool */}
-          <Route path='/ImageToPDF' element={<PDF />} />
-          <Route path='/ImageToPDF/uploads/:filename' element={<PDF />} />
+          <Route path='/Pdf' element={<Pdf />} />
+          <Route path='/Pdf/uploads/:filename' element={<Pdf/>} />
 
           {/* Path for Image Grayscale tool */}
           <Route path='/Grayscale' element={<Grayscale />} />

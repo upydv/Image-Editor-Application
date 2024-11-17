@@ -24,7 +24,7 @@ function Home() {
             </Link>
           </div>
           <div>
-            <Link to={'/ImageToPDF'}>
+            <Link to={'/Pdf'}>
               <div className="card">
                 <div className="icon">🔄</div>
                 <h3>Image to PDF</h3>

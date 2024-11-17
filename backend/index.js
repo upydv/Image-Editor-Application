@@ -4,6 +4,7 @@ const cors = require('cors');
 const multer = require('multer');
 const { exec } = require('child_process');
 const PORT = process.env.PORT || 5000;
+const path = require('path');
 
 // Define the uploads directory path
 const UPLOADS_PATH = './uploads';
@@ -11,6 +12,9 @@ const SKETCHED_PATH ='./sketched_pic'
 const BLACKANDWHITE_PATH ='./Black_White_Images'
 const GRAYSCALE_PATH ='./Gray_Scale'
 const REMOVEBACKGROUND_PATH ='./RemoveBackground_image'
+const BLUR_PATH ='./Blur_Images'
+const PDF_PATH ='./Converted_PDFs'
+
 
 
 
@@ -32,6 +36,14 @@ if (!fs.existsSync(GRAYSCALE_PATH)) {
 if (!fs.existsSync(REMOVEBACKGROUND_PATH)) {
     fs.mkdirSync(REMOVEBACKGROUND_PATH);
 }
+if (!fs.existsSync(BLUR_PATH)) {
+    fs.mkdirSync(BLUR_PATH);
+}
+
+if (!fs.existsSync(PDF_PATH)) {
+    fs.mkdirSync(PDF_PATH);
+}
+
 
 const app = express();
 app.use(express.json());
@@ -43,6 +55,10 @@ app.use('/sketched_pic', express.static(SKETCHED_PATH));
 app.use('/Black_White_Images', express.static(BLACKANDWHITE_PATH));
 app.use('/Gray_Scale', express.static(GRAYSCALE_PATH));
 app.use('/RemoveBackground_image', express.static(REMOVEBACKGROUND_PATH));
+app.use('/Blur_Images', express.static(BLUR_PATH));
+app.use('/Converted_PDFs', express.static(PDF_PATH));
+
+
 
 
 
@@ -163,6 +179,42 @@ app.post('/api/RemoveBackground', (req, res) => {
 });
 
 
+app.post('/api/BackgroundBlur', (req, res) => {
+    const { imageUrl } = req.body;
+
+    exec(`python3 BackgroundBlur.py ${imageUrl}`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${error.message}`);
+            return res.status(500).json({ message: "Error in Black and white process" });
+        }
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).json({ message: stderr });
+        }
+        console.log(stdout);  // Output from Python script
+        res.json({ message: "Black and white completed successfully" });
+    });
+});
+
+
+app.post('/api/ImageToPDF', (req, res) => {
+    const { imageUrl } = req.body;
+
+    exec(`python3 PDF.py ${imageUrl}`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${error.message}`);
+            return res.status(500).json({ message: "Error in Black and white process" });
+        }
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).json({ message: stderr });
+        }
+        console.log(stdout);  // Output from Python script
+        res.json({ message: "Black and white completed successfully" });
+    });
+});
+
+
 // Route to serve specific sketched files
 app.get('/sketched_pic/:fileName', (req, res) => {
     const filePath = path.join(SKETCHED_PATH, req.params.fileName);
@@ -193,6 +245,24 @@ app.get('/Grayscale/:fileName', (req, res) => {
 
 app.get('/RemoveBackground/:fileName', (req, res) => {
     const filePath = path.join(REMOVEBACKGROUND_PATH, req.params.fileName);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            res.status(404).send({ error: 'File not found' });
+        }
+    });
+});
+
+app.get('/BackgroundBlur/:fileName', (req, res) => {
+    const filePath = path.join(BLUR_PATH, req.params.fileName);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            res.status(404).send({ error: 'File not found' });
+        }
+    });
+});
+
+app.get('/ImageToPDF/:fileName', (req, res) => {
+    const filePath = path.join(PDF_PATH, req.params.fileName);
     res.sendFile(filePath, (err) => {
         if (err) {
             res.status(404).send({ error: 'File not found' });
