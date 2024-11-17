@@ -144,90 +144,90 @@ app.post('/api/Mirror', (req, res) => {
     exec(`python3 Mirror.py ${imageUrl}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
-            return res.status(500).json({ message: "Error in Black and white process" });
+            return res.status(500).json({ message: "Error in Mirrot process" });
         }
         if (stderr) {
             console.error(`Stderr: ${stderr}`);
             return res.status(500).json({ message: stderr });
         }
         console.log(stdout);  // Output from Python script
-        res.json({ message: "Black and white completed successfully" });
+        res.json({ message: "Mirrot completed successfully" });
     });
 });
 
-
+// Grayscale
 app.post('/api/Grayscale', (req, res) => {
     const { imageUrl } = req.body;
 
     exec(`python3 grayscale.py ${imageUrl}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
-            return res.status(500).json({ message: "Error in Black and white process" });
+            return res.status(500).json({ message: "Error in Grayscale process" });
         }
         if (stderr) {
             console.error(`Stderr: ${stderr}`);
             return res.status(500).json({ message: stderr });
         }
         console.log(stdout);  // Output from Python script
-        res.json({ message: "Black and white completed successfully" });
+        res.json({ message: "Grayscale completed successfully" });
     });
 });
 
-
+// Remove Background
 app.post('/api/RemoveBackground', (req, res) => {
     const { imageUrl } = req.body;
 
     exec(`python3 RemoveBackground.py ${imageUrl}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
-            return res.status(500).json({ message: "Error in Black and white process" });
+            return res.status(500).json({ message: "Error in Remove Background process" });
         }
         if (stderr) {
             console.error(`Stderr: ${stderr}`);
             return res.status(500).json({ message: stderr });
         }
         console.log(stdout);  // Output from Python script
-        res.json({ message: "Black and white completed successfully" });
+        res.json({ message: "Remove Background completed successfully" });
     });
 });
 
-
+// Background Blur
 app.post('/api/BackgroundBlur', (req, res) => {
     const { imageUrl } = req.body;
 
     exec(`python3 BackgroundBlur.py ${imageUrl}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
-            return res.status(500).json({ message: "Error in Black and white process" });
+            return res.status(500).json({ message: "Error in Background Blur process" });
         }
         if (stderr) {
             console.error(`Stderr: ${stderr}`);
             return res.status(500).json({ message: stderr });
         }
         console.log(stdout);  // Output from Python script
-        res.json({ message: "Black and white completed successfully" });
+        res.json({ message: "Background Blur completed successfully" });
     });
 });
 
-
+// Image to PDF
 app.post('/api/ImageToPDF', (req, res) => {
     const { imageUrl } = req.body;
 
     exec(`python3 PDF.py ${imageUrl}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
-            return res.status(500).json({ message: "Error in Black and white process" });
+            return res.status(500).json({ message: "Error in Image to PDF process" });
         }
         if (stderr) {
             console.error(`Stderr: ${stderr}`);
             return res.status(500).json({ message: stderr });
         }
         console.log(stdout);  // Output from Python script
-        res.json({ message: "Black and white completed successfully" });
+        res.json({ message: "Image to PDF completed successfully" });
     });
 });
 
-
+// Resize
 app.post('/api/Resize', (req, res) => {
     const { imageUrl, height ,width } = req.body;
     
@@ -252,14 +252,14 @@ app.post('/api/Resize', (req, res) => {
     });
 });
 
-
+// Enhance
 app.post('/api/Enhance', (req, res) => {
     const { imageUrl } = req.body;
 
     exec(`python3 Enhance.py ${imageUrl}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
-            return res.status(500).json({ message: "Error in Black and white process" });
+            return res.status(500).json({ message: "Error in Enhance process" });
         }
         if (stderr) {
             console.error(`Stderr: ${stderr}`);

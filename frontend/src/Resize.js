@@ -60,8 +60,7 @@ function Resize() {
 
         if (h) setHeight(parseInt(h, 10)); // Ensure the value is an integer
         if (w) setWidth(parseInt(w, 10)); // Ensure the value is an integer
-        if(h!=0 && w!=0)
-            Function();
+        Function();
     };
 
     return (

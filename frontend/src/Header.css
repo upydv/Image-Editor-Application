@@ -29,6 +29,7 @@
 
 /* Icon label (name) that will be shown on hover */
 .icon-label {
+    color: aliceblue;
     display: none;
     font-size: 1rem;
     margin-top: 10px;

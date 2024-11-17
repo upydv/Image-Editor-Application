@@ -12,21 +12,16 @@ function Home() {
           <p>
             This Image Editor application provides various features to edit and transform images. With easy-to-use tools, users can resize images, convert them to PDF, apply filters, and much more.
           </p>
+          <hr class="black-line" />
+
+
         </div>
         <div className="grid">
-          <div>
-            <Link to={'/Resize'}>
-              <div className="card">
-                <div className="icon">🔀</div>
-                <h3>Image Resize</h3>
-                <p>Resize images to specified dimensions while maintaining aspect ratio or custom dimensions.</p>
-              </div>
-            </Link>
-          </div>
+          
           <div>
             <Link to={'/Pdf'}>
               <div className="card">
-                <div className="icon">🔄</div>
+                <div className="icon">📄</div>
                 <h3>Image to PDF</h3>
                 <p>Convert single or multiple images into a PDF file.</p>
               </div>
@@ -36,7 +31,7 @@ function Home() {
           <div>
             <Link to={'/Grayscale'}>
               <div className="card">
-                <div className="icon">📄</div>
+                <div className="icon">⚪⚫</div>
                 <h3>Image Grayscale</h3>
                 <p>Apply a grayscale filter to images, removing all color to create a classic black-and-white effect.</p>
               </div>
@@ -81,9 +76,18 @@ function Home() {
           <div>
             <Link to={'/Mirror'}>
               <div className="card">
-                <div className="icon">🌫️</div>
+                <div className="icon">🔃</div>
                 <h3>Mirror Image</h3>
                 <p>Blur the background of an image to emphasize the subject.</p>
+              </div>
+            </Link>
+          </div>
+          <div>
+            <Link to={'/Resize'}>
+              <div className="card">
+                <div className="icon">🔀</div>
+                <h3>Image Resize</h3>
+                <p>Resize images to specified dimensions while maintaining aspect ratio or custom dimensions.</p>
               </div>
             </Link>
           </div>

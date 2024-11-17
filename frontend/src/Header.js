@@ -7,25 +7,21 @@ function Header() {
         <div className="header">
             <div className="header-item">
                 <Link to="/" className="header-link">
-                    <span className="icon">H</span>
+                    <span className="icon">🏠</span>
                     <h3 className="icon-label">Home</h3>
                 </Link>
             </div>
-            <div className="header-item">
-                <Link to="/Resize" className="header-link">
-                    <span className="icon">🔀</span>
-                    <h3 className="icon-label">Image Resize</h3>
-                </Link>
-            </div>
+
+            
             <div className="header-item">
                 <Link to="/Pdf" className="header-link">
-                    <span className="icon">🔄</span>
+                    <span className="icon">📄</span>
                     <h3 className="icon-label">Image to PDF</h3>
                 </Link>
             </div>
             <div className="header-item">
                 <Link to="/Grayscale" className="header-link">
-                    <span className="icon">📄</span>
+                    <span className="icon">⚪⚫</span>
                     <h3 className="icon-label">Image Grayscale</h3>
                 </Link>
             </div>
@@ -33,6 +29,12 @@ function Header() {
                 <Link to="/Sketching" className="header-link">
                     <span className="icon">📊</span>
                     <h3 className="icon-label">Image Sketching</h3>
+                </Link>
+            </div>
+            <div className="header-item">
+                <Link to="/Mirror" className="header-link">
+                    <span className="icon">🔃</span>
+                    <h3 className="icon-label">Mirror Image</h3>
                 </Link>
             </div>
             <div className="header-item">
@@ -51,6 +53,14 @@ function Header() {
                 <Link to="/BackgroundBlur" className="header-link">
                     <span className="icon">🌫️</span>
                     <h3 className="icon-label">Background Blur</h3>
+                </Link>
+            </div>
+            
+
+            <div className="header-item">
+                <Link to="/Resize" className="header-link">
+                    <span className="icon">🔀</span>
+                    <h3 className="icon-label">Image Resize</h3>
                 </Link>
             </div>
         </div>
