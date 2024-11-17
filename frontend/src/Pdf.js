@@ -16,12 +16,12 @@ function Pdf() {
             const response = await axios.post('https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/api/ImageToPDF', {
                 imageUrl: profileImage
             });
-            alert("Grayscale image saved");
+            alert("Image converted to PDF successfully.");
             console.log(response.data.message);
-            setFlag(true)
+            setFlag(true);
         } catch (error) {
-            console.error("Error in Grayscale:", error);
-            alert(error);
+            console.error("Error converting image to PDF:", error);
+            alert("There was an error converting the image to PDF.");
         }
     };
 
@@ -34,7 +34,7 @@ function Pdf() {
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `Document_${filename}.pdf`; // Specify the filename with a .pdf extension
+                link.download = `Converted_${filename}.pdf`; // Specify the filename for the PDF
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -47,36 +47,38 @@ function Pdf() {
             alert("There was an error downloading the PDF.");
         }
     };
-    
-    
 
     return (
         <>
-        <Header/>
-        <div className="page">
-            <div className="container">
-                <p className="description">
-                    Sketching by pen and pencil is a traditional art form that involves creating detailed images using simple tools.
-                    Pencils are often used for shading and soft lines, while pens provide sharp, defined edges. This technique allows
-                    artists to explore textures, depth, and intricate details, making each sketch unique and expressive.
-                </p>
+            <Header />
+            <div className="page">
+                {/* <div className="container">
+                    <p className="description">
+                        Converting images to PDF allows you to combine visual content into a portable, easy-to-share format.
+                        This feature is useful for creating document-style presentations or for printing purposes.
+                    </p>
+                </div> */}
+                <div className="upload-section">
+                    <Upload routingPlace="Pdf" />
+                </div>
+                <div className="image-row">
+                    <img src={profileImage} alt="Uploaded Preview" className="image" />
+                    <button onClick={Function} className="button">Convert to PDF</button>
+                    {flag && (
+                        // <img src={SAVE_PATH} alt="Converted PDF Result" className="image" />
+                
+                        <button onClick={downloadPDF} className="button">
+                            Download Converted PDF
+                        </button>
+                        
+                    )}
+                </div>
+                {/* {flag && (
+                    <button onClick={downloadPDF} className="button">
+                        Download Converted PDF
+                    </button>
+                )} */}
             </div>
-            <div className="upload-section">
-            <Upload routingPlace="Pdf" />
-            </div>
-            <div className="image-row">
-                <img src={profileImage} alt="Uploaded Preview" className="image" />
-                <button onClick={Function} className="button">Grayscale It</button>
-                {flag && (
-        <img src={SAVE_PATH} alt="Grayscale Result" className="image" />
-      )}
-                {/* <img src={SAVE_PATH} alt="Sketched Result" className="image" /> */}
-            </div>
-            { flag &&(
-                <button onClick={downloadPDF} className="button">
-                    Download Grayscale Image
-                </button>)}
-        </div>
         </>
     );
 }

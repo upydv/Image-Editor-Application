@@ -64,7 +64,7 @@ function Home() {
             <Link to={'/Enhance'}>
               <div className="card">
                 <div className="icon">⚡</div>
-                <h3>Enhance Image</h3>
+                <h3>Sharpning & Enhance Image</h3>
                 <p>Improve image quality with sharpening, noise reduction, and more.</p>
               </div>
             </Link>
@@ -79,10 +79,10 @@ function Home() {
             </Link>
           </div>
           <div>
-            <Link to={'/Blackandwhite'}>
+            <Link to={'/Mirror'}>
               <div className="card">
                 <div className="icon">🌫️</div>
-                <h3>Blackandwhite</h3>
+                <h3>Mirror Image</h3>
                 <p>Blur the background of an image to emphasize the subject.</p>
               </div>
             </Link>

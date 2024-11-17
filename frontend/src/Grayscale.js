@@ -40,7 +40,7 @@ function Grayscale() {
                 document.body.removeChild(link);
                 URL.revokeObjectURL(url);  // Clean up the object URL
             } else {
-                alert("Sketched image is not available yet. Please try again later.");
+                alert("Grayscale image is not available yet. Please try again later.");
             }
         } catch (error) {
             console.error("Error downloading the image:", error);
@@ -53,13 +53,6 @@ function Grayscale() {
         <>
         <Header/>
         <div className="page">
-            <div className="container">
-                <p className="description">
-                    Sketching by pen and pencil is a traditional art form that involves creating detailed images using simple tools.
-                    Pencils are often used for shading and soft lines, while pens provide sharp, defined edges. This technique allows
-                    artists to explore textures, depth, and intricate details, making each sketch unique and expressive.
-                </p>
-            </div>
             <div className="upload-section">
             <Upload routingPlace="Grayscale" />
             </div>
@@ -67,9 +60,8 @@ function Grayscale() {
                 <img src={profileImage} alt="Uploaded Preview" className="image" />
                 <button onClick={Function} className="button">Grayscale It</button>
                 {flag && (
-        <img src={SAVE_PATH} alt="Grayscale Result" className="image" />
-      )}
-                {/* <img src={SAVE_PATH} alt="Sketched Result" className="image" /> */}
+                    <img src={SAVE_PATH} alt="Grayscale Result" className="image" />
+                )}
             </div>
             { flag &&(
                 <button onClick={downloadImage} className="button">

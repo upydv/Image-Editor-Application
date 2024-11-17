@@ -18,7 +18,7 @@ function BackgroundBlur() {
             });
             alert("Background blur image saved");
             console.log(response.data.message);
-            setFlag(true)
+            setFlag(true);
         } catch (error) {
             console.error("Error in making background blur:", error);
             alert(error);
@@ -34,11 +34,11 @@ function BackgroundBlur() {
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `Grayscale_${filename}`;  // Specify the filename for the download
+                link.download = `BackgroundBlur_${filename}`; // Updated filename for blur background
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                URL.revokeObjectURL(url);  // Clean up the object URL
+                URL.revokeObjectURL(url); // Clean up the object URL
             } else {
                 alert("Image with blur background is not available yet. Please try again later.");
             }
@@ -47,34 +47,26 @@ function BackgroundBlur() {
             alert("There was an error downloading the image.");
         }
     };
-    
 
     return (
         <>
         <Header/>
         <div className="page">
-            <div className="container">
-                <p className="description">
-                    Sketching by pen and pencil is a traditional art form that involves creating detailed images using simple tools.
-                    Pencils are often used for shading and soft lines, while pens provide sharp, defined edges. This technique allows
-                    artists to explore textures, depth, and intricate details, making each sketch unique and expressive.
-                </p>
-            </div>
             <div className="upload-section">
-            <Upload routingPlace="BackgroundBlur" />
+                <Upload routingPlace="BackgroundBlur" />
             </div>
             <div className="image-row">
                 <img src={profileImage} alt="Uploaded Preview" className="image" />
-                <button onClick={Function} className="button">BackgroundBlur It</button>
+                <button onClick={Function} className="button">Blur Background</button>
                 {flag && (
-        <img src={SAVE_PATH} alt="Background blur Image Result" className="image" />
-      )}
-                {/* <img src={SAVE_PATH} alt="Sketched Result" className="image" /> */}
+                    <img src={SAVE_PATH} alt="Background blur Image Result" className="image" />
+                )}
             </div>
-            { flag &&(
+            {flag && (
                 <button onClick={downloadImage} className="button">
-                    Download Blur Image
-                </button>)}
+                    Download Image
+                </button>
+            )}
         </div>
         </>
     );

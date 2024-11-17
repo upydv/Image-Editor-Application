@@ -10,12 +10,14 @@ const { log } = require('console');
 // Define the uploads directory path
 const UPLOADS_PATH = './uploads';
 const SKETCHED_PATH ='./sketched_pic'
-const BLACKANDWHITE_PATH ='./Black_White_Images'
+const BLACKANDWHITE_PATH ='./Mirrored_Images'
 const GRAYSCALE_PATH ='./Gray_Scale'
 const REMOVEBACKGROUND_PATH ='./RemoveBackground_image'
 const BLUR_PATH ='./Blur_Images'
 const PDF_PATH ='./Converted_PDFs'
 const RESIZED_PATH ='./Resized_images'
+const ENHANCED_PATH ='./Enhanced_Images'
+
 
 
 
@@ -50,6 +52,9 @@ if (!fs.existsSync(PDF_PATH)) {
 if (!fs.existsSync(RESIZED_PATH)) {
     fs.mkdirSync(RESIZED_PATH);
 }
+if (!fs.existsSync(ENHANCED_PATH)) {
+    fs.mkdirSync(ENHANCED_PATH);
+}
 
 
 const app = express();
@@ -59,12 +64,14 @@ app.use(cors());
 // Serve static files for uploaded images
 app.use('/uploads', express.static(UPLOADS_PATH));
 app.use('/sketched_pic', express.static(SKETCHED_PATH));
-app.use('/Black_White_Images', express.static(BLACKANDWHITE_PATH));
+app.use('/Mirrored_Images', express.static(BLACKANDWHITE_PATH));
 app.use('/Gray_Scale', express.static(GRAYSCALE_PATH));
 app.use('/RemoveBackground_image', express.static(REMOVEBACKGROUND_PATH));
 app.use('/Blur_Images', express.static(BLUR_PATH));
 app.use('/Converted_PDFs', express.static(PDF_PATH));
 app.use('/Resized_images', express.static(RESIZED_PATH));
+app.use('/Enhanced_Images', express.static(ENHANCED_PATH));
+
 
 
 
@@ -134,10 +141,10 @@ app.post('/api/sketch', (req, res) => {
 });
 
 // Black and white
-app.post('/api/blackandwhite', (req, res) => {
+app.post('/api/Mirror', (req, res) => {
     const { imageUrl } = req.body;
 
-    exec(`python3 blackandwhite.py ${imageUrl}`, (error, stdout, stderr) => {
+    exec(`python3 Mirror.py ${imageUrl}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
             return res.status(500).json({ message: "Error in Black and white process" });
@@ -249,6 +256,25 @@ app.post('/api/Resize', (req, res) => {
 });
 
 
+app.post('/api/Enhance', (req, res) => {
+    const { imageUrl } = req.body;
+
+    exec(`python3 Enhance.py ${imageUrl}`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${error.message}`);
+            return res.status(500).json({ message: "Error in Black and white process" });
+        }
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).json({ message: stderr });
+        }
+        console.log(stdout);  // Output from Python script
+        res.json({ message: "Black and white completed successfully" });
+    });
+});
+
+
+
 // Route to serve specific sketched files
 app.get('/sketched_pic/:fileName', (req, res) => {
     const filePath = path.join(SKETCHED_PATH, req.params.fileName);
@@ -259,7 +285,7 @@ app.get('/sketched_pic/:fileName', (req, res) => {
     });
 });
 
-app.get('/Blackandwhite/:fileName', (req, res) => {
+app.get('/Mirror/:fileName', (req, res) => {
     const filePath = path.join(BLACKANDWHITE_PATH, req.params.fileName);
     res.sendFile(filePath, (err) => {
         if (err) {
@@ -306,6 +332,15 @@ app.get('/ImageToPDF/:fileName', (req, res) => {
 
 app.get('/Resize/:fileName', (req, res) => {
     const filePath = path.join(RESIZED_PATH, req.params.fileName);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            res.status(404).send({ error: 'File not found' });
+        }
+    });
+});
+
+app.get('/Enhance/:fileName', (req, res) => {
+    const filePath = path.join(ENHANCED_PATH, req.params.fileName);
     res.sendFile(filePath, (err) => {
         if (err) {
             res.status(404).send({ error: 'File not found' });

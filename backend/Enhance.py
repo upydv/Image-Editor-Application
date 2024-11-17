@@ -1,17 +1,25 @@
 import cv2
+import numpy as np
 import sys
 import os
 import requests
 from urllib.parse import urlparse
 
-# Function to mirror the image horizontally
-def mirror_horizontal(image):
-    """
-    Mirrors the image horizontally.
-    :param image: Input image
-    :return: Horizontally mirrored image
-    """
-    return cv2.flip(image, 1)
+# Function to adjust contrast using histogram equalization
+def enhance_contrast(image):
+    lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)  # Convert to LAB color space
+    l, a, b = cv2.split(lab)  # Split into L, A, and B channels
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))  # Apply CLAHE
+    l_clahe = clahe.apply(l)
+    lab_clahe = cv2.merge((l_clahe, a, b))  # Merge the adjusted L channel back
+    return cv2.cvtColor(lab_clahe, cv2.COLOR_LAB2BGR)  # Convert back to BGR
+
+# Function to sharpen the image
+def sharpen_image(image):
+    kernel = np.array([[0, -1, 0], 
+                       [-1, 5, -1], 
+                       [0, -1, 0]])  # Sharpening kernel
+    return cv2.filter2D(image, -1, kernel)
 
 # Function to download the image from a URL
 def download_image(url, save_dir="downloads"):
@@ -27,7 +35,7 @@ def download_image(url, save_dir="downloads"):
         print("Error: Unable to download the image.")
         sys.exit(1)
 
-# Main execution
+# Start of execution
 filename = sys.argv[1] if len(sys.argv) > 1 else input("Please provide the image filename (URL or path): ")
 
 # Check if the input is a URL
@@ -45,18 +53,23 @@ if image is None:
     print("Error: Could not load image.")
     sys.exit(1)
 
-# Mirror the image horizontally
-horizontal_image = mirror_horizontal(image)
+# Enhance contrast
+contrast_enhanced_image = enhance_contrast(image)
 
-# Ensure the "mirrored_output" directory exists
-output_dir = "mirrored_output"
+# Sharpen the image
+sharpened_image = sharpen_image(contrast_enhanced_image)
+
+# Ensure the "enhanced_output" directory exists
+output_dir = "Enhanced_Images"
 os.makedirs(output_dir, exist_ok=True)
 
-# Save the horizontally mirrored image using the original file name
-horizontal_path = os.path.join(output_dir, f"horizontal_{original_name}")
-cv2.imwrite(horizontal_path, horizontal_image)
+# Generate output path using the original name from the URL or file
+output_path = os.path.join(output_dir, f"enhanced_{original_name}")
 
-print(f"Horizontally mirrored image saved as '{horizontal_path}'")
+# Save the enhanced image
+cv2.imwrite(output_path, sharpened_image)
+
+print(f"Enhanced image saved as '{output_path}'")
 
 # Clean up temporary file if downloaded
 if filename.startswith("http") and os.path.exists(local_filename):

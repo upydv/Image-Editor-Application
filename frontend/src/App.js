@@ -8,7 +8,7 @@ import Grayscale from './Grayscale';
 import Enhance from './Enhance';
 import RemoveBackground from './RemoveBackground';
 import BackgroundBlur from './BackgroundBlur';
-import Blackandwhite from './Blackandwhite';
+import Mirror from './Mirror';
 
 
 function App() {
@@ -49,8 +49,8 @@ function App() {
           <Route path='/Enhance/uploads/:filename' element={<Enhance />} />
 
           {/* Path for Enhance tool */}
-          <Route path='/Blackandwhite' element={<Blackandwhite />} />
-          <Route path='/Blackandwhite/uploads/:filename' element={<Blackandwhite/>} />
+          <Route path='/Mirror' element={<Mirror />} />
+          <Route path='/Mirror/uploads/:filename' element={<Mirror/>} />
 
         </Routes>
       </BrowserRouter>
