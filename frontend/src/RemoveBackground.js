@@ -40,7 +40,7 @@ function RemoveBackground() {
                 document.body.removeChild(link);
                 URL.revokeObjectURL(url);  // Clean up the object URL
             } else {
-                alert("Sketched image is not available yet. Please try again later.");
+                alert("Image without background is not available yet. Please try again later.");
             }
         } catch (error) {
             console.error("Error downloading the image:", error);
@@ -67,9 +67,9 @@ function RemoveBackground() {
                 <img src={profileImage} alt="Uploaded Preview" className="image" />
                 <button onClick={Function} className="button">Remove Background It</button>
                 {flag && (
-        <img src={SAVE_PATH} alt="Grayscale Result" className="image" />
+        <img src={SAVE_PATH} alt="Remove Background Image Result" className="image" />
       )}
-                {/* <img src={SAVE_PATH} alt="Sketched Result" className="image" /> */}
+                {/* <img src={SAVE_PATH} alt="Remove Background Image Result" className="image" /> */}
             </div>
             { flag &&(
                 <button onClick={downloadImage} className="button">

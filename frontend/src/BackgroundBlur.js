@@ -16,11 +16,11 @@ function BackgroundBlur() {
             const response = await axios.post('https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/api/BackgroundBlur', {
                 imageUrl: profileImage
             });
-            alert("Grayscale image saved");
+            alert("Background blur image saved");
             console.log(response.data.message);
             setFlag(true)
         } catch (error) {
-            console.error("Error in Grayscale:", error);
+            console.error("Error in making background blur:", error);
             alert(error);
         }
     };
@@ -40,7 +40,7 @@ function BackgroundBlur() {
                 document.body.removeChild(link);
                 URL.revokeObjectURL(url);  // Clean up the object URL
             } else {
-                alert("Sketched image is not available yet. Please try again later.");
+                alert("Image with blur background is not available yet. Please try again later.");
             }
         } catch (error) {
             console.error("Error downloading the image:", error);
@@ -67,7 +67,7 @@ function BackgroundBlur() {
                 <img src={profileImage} alt="Uploaded Preview" className="image" />
                 <button onClick={Function} className="button">BackgroundBlur It</button>
                 {flag && (
-        <img src={SAVE_PATH} alt="Grayscale Result" className="image" />
+        <img src={SAVE_PATH} alt="Background blur Image Result" className="image" />
       )}
                 {/* <img src={SAVE_PATH} alt="Sketched Result" className="image" /> */}
             </div>

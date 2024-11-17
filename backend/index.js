@@ -14,6 +14,8 @@ const GRAYSCALE_PATH ='./Gray_Scale'
 const REMOVEBACKGROUND_PATH ='./RemoveBackground_image'
 const BLUR_PATH ='./Blur_Images'
 const PDF_PATH ='./Converted_PDFs'
+const RESIZED_PATH ='./Resized_images'
+
 
 
 
@@ -44,6 +46,10 @@ if (!fs.existsSync(PDF_PATH)) {
     fs.mkdirSync(PDF_PATH);
 }
 
+if (!fs.existsSync(RESIZED_PATH)) {
+    fs.mkdirSync(RESIZED_PATH);
+}
+
 
 const app = express();
 app.use(express.json());
@@ -57,6 +63,8 @@ app.use('/Gray_Scale', express.static(GRAYSCALE_PATH));
 app.use('/RemoveBackground_image', express.static(REMOVEBACKGROUND_PATH));
 app.use('/Blur_Images', express.static(BLUR_PATH));
 app.use('/Converted_PDFs', express.static(PDF_PATH));
+app.use('/Resized_images', express.static(RESIZED_PATH));
+
 
 
 
@@ -215,6 +223,29 @@ app.post('/api/ImageToPDF', (req, res) => {
 });
 
 
+app.post('/api/Resize', (req, res) => {
+    const { imageUrl } = req.body;
+
+    const width = 300;
+    const height = 400;
+    const args = `resize ${width} ${height} ${imageUrl}`; 
+
+    // Run the Python script with the specified filename as an argument
+    exec(`python3 Resize.py ${args}`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${error.message}`);
+            return res.status(500).json({ message: "Error in resizing process", error: error.message });
+        }
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).json({ message: "Error in resizing process", error: stderr });
+        }
+        console.log(stdout);  // Output from Python script
+        res.json({ message: "Resizing completed successfully", output: stdout });
+    });
+});
+
+
 // Route to serve specific sketched files
 app.get('/sketched_pic/:fileName', (req, res) => {
     const filePath = path.join(SKETCHED_PATH, req.params.fileName);
@@ -263,6 +294,15 @@ app.get('/BackgroundBlur/:fileName', (req, res) => {
 
 app.get('/ImageToPDF/:fileName', (req, res) => {
     const filePath = path.join(PDF_PATH, req.params.fileName);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            res.status(404).send({ error: 'File not found' });
+        }
+    });
+});
+
+app.get('/Resize/:fileName', (req, res) => {
+    const filePath = path.join(RESIZED_PATH, req.params.fileName);
     res.sendFile(filePath, (err) => {
         if (err) {
             res.status(404).send({ error: 'File not found' });

@@ -67,7 +67,7 @@ if __name__ == "__main__":
     # Resize image
     try:
         resized_image = resize_image(image, width, height)
-        output_path = save_image("edited_images", resized_image, f"resized_{os.path.basename(filename)}")
+        output_path = save_image("Resized_images", resized_image, f"resized_{os.path.basename(filename)}")
         print(f"Resized image saved as '{output_path}'")
     except Exception as e:
         print(f"Error during resizing or saving: {e}")
