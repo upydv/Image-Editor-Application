@@ -20,9 +20,6 @@ const ENHANCED_PATH ='./Enhanced_Images'
 
 
 
-
-
-
 // Ensure the uploads directory exists
 if (!fs.existsSync(UPLOADS_PATH)) {
     fs.mkdirSync(UPLOADS_PATH);
@@ -234,8 +231,8 @@ app.post('/api/ImageToPDF', (req, res) => {
 app.post('/api/Resize', (req, res) => {
     const { imageUrl, height ,width } = req.body;
     
-    const w = height || 300;
-    const h = width || 400;
+    const w = height ;
+    const h = width ;
     console.log(w,h);
     
     const args = `resize ${h} ${w} ${imageUrl}`; 

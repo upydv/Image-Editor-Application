@@ -7,8 +7,8 @@ import './Sketching.css'; // Updated CSS file for resizing functionality
 
 function Resize() {
     const [flag, setFlag] = useState(false);
-    const [height, setHeight] = useState(400); // Default height
-    const [width, setWidth] = useState(300); // Default width
+    const [height, setHeight] = useState(0); // Default height
+    const [width, setWidth] = useState(0); // Default width
     const { filename } = useParams();
     const profileImage = `https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/uploads/${filename}`;
     const SAVE_PATH = `https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/Resized_images/resized_${filename}`;
@@ -23,6 +23,7 @@ function Resize() {
             alert("Resized image has been saved successfully.");
             console.log(response.data.message);
             setFlag(true);
+            // navigate(`/Resize`);
         } catch (error) {
             console.error("Error in resizing the image:", error);
             alert("Error occurred while resizing the image. Please try again.");
@@ -43,6 +44,7 @@ function Resize() {
                 link.click();
                 document.body.removeChild(link);
                 URL.revokeObjectURL(url); // Clean up the object URL
+
             } else {
                 alert("Resized image is not available yet. Please try again later.");
             }
@@ -58,7 +60,8 @@ function Resize() {
 
         if (h) setHeight(parseInt(h, 10)); // Ensure the value is an integer
         if (w) setWidth(parseInt(w, 10)); // Ensure the value is an integer
-        Function();
+        if(h!=0 && w!=0)
+            Function();
     };
 
     return (
