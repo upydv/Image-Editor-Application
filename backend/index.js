@@ -5,6 +5,7 @@ const multer = require('multer');
 const { exec } = require('child_process');
 const PORT = process.env.PORT || 5000;
 const path = require('path');
+const { log } = require('console');
 
 // Define the uploads directory path
 const UPLOADS_PATH = './uploads';
@@ -224,11 +225,13 @@ app.post('/api/ImageToPDF', (req, res) => {
 
 
 app.post('/api/Resize', (req, res) => {
-    const { imageUrl } = req.body;
-
-    const width = 300;
-    const height = 400;
-    const args = `resize ${width} ${height} ${imageUrl}`; 
+    const { imageUrl, height ,width } = req.body;
+    
+    const w = height || 300;
+    const h = width || 400;
+    console.log(w,h);
+    
+    const args = `resize ${h} ${w} ${imageUrl}`; 
 
     // Run the Python script with the specified filename as an argument
     exec(`python3 Resize.py ${args}`, (error, stdout, stderr) => {

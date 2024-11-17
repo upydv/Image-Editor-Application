@@ -7,6 +7,8 @@ import './Sketching.css';
 
 function Resize() {
     const [flag, setFlag] = useState(false);
+    const [height, setHeight] = useState(400);
+    const [width, setWidth] = useState(300);
     const { filename } = useParams();
     const profileImage = `https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/uploads/${filename}`;
     const SAVE_PATH = `https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/Resized_images/resized_${filename}`;
@@ -14,7 +16,10 @@ function Resize() {
     const Function = async () => {
         try {
             const response = await axios.post('https://friendly-parakeet-rqqvrjqg4v7fwxr7-5000.app.github.dev/api/Resize', {
-                imageUrl: profileImage
+                imageUrl: profileImage,
+                width :width,
+                height :height
+                
             });
             alert("Resized image saved");
             console.log(response.data.message);
@@ -49,6 +54,14 @@ function Resize() {
     };
     
 
+    const handleInputChange = () => {
+        const h = document.getElementById('height').value;
+        const w = document.getElementById('width').value;
+
+        if (h) setHeight(parseInt(h, 10)); // Ensure value is an integer
+        if (w) setWidth(parseInt(w, 10)); // Ensure value is an integer
+        Function();
+    };
     return (
         <>
         <Header/>
@@ -63,13 +76,27 @@ function Resize() {
             <div className="upload-section">
 
                 <Upload routingPlace="Resize" />
-                <input required type='number' placeholder='Enter Height'/>
-                <input required type='number' placeholder='Enter Weidth'/>
+                <div>
+                    <input 
+                        id='height' 
+                        required 
+                        type='number' 
+                        placeholder='Enter Height' 
+                    />
+                    <input 
+                        id='width' 
+                        required 
+                        type='number' 
+                        placeholder='Enter Width' 
+                    />
+                    {/* <p>Height: {height}</p>
+                    <p>Width: {width}</p> */}
+                </div>
 
             </div>
             <div className="image-row">
                 <img src={profileImage} alt="Uploaded Preview" className="image" />
-                <button onClick={Function} className="button">RESIZED It</button>
+                <button onClick={handleInputChange} className="button">RESIZED It</button>
                 {flag && (
         <img src={SAVE_PATH} alt="Resized Image Result" className="image" />
       )}

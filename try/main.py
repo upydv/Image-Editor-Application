@@ -1,74 +1,56 @@
 import cv2
-import os
-import sys
-import requests
 import numpy as np
+import sys
+import os
 
-def download_image_from_url(url):
+# Function to adjust contrast using histogram equalization
+def enhance_contrast(image):
     """
-    Downloads an image from a URL and returns it as a numpy array.
+    Enhances the contrast of the image by converting to LAB color space
+    and applying CLAHE to the L channel.
     """
-    try:
-        response = requests.get(url, stream=True)
-        response.raise_for_status()  # Raise HTTPError for bad responses
-        image_data = np.asarray(bytearray(response.content), dtype="uint8")
-        image = cv2.imdecode(image_data, cv2.IMREAD_COLOR)
-        return image
-    except requests.exceptions.RequestException as e:
-        print(f"Error: Unable to fetch image from URL: {e}")
-        sys.exit(1)
+    lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)  # Convert to LAB color space
+    l, a, b = cv2.split(lab)  # Split into L, A, and B channels
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))  # Apply CLAHE
+    l_clahe = clahe.apply(l)
+    lab_clahe = cv2.merge((l_clahe, a, b))  # Merge the adjusted L channel back
+    return cv2.cvtColor(lab_clahe, cv2.COLOR_LAB2BGR)  # Convert back to BGR
 
-def resize_image(image, width, height):
+# Function to sharpen the image
+def sharpen_image(image):
     """
-    Resizes the given image to the specified width and height.
+    Sharpens the image using a kernel.
     """
-    return cv2.resize(image, (width, height))
+    kernel = np.array([[0, -1, 0], 
+                       [-1, 5, -1], 
+                       [0, -1, 0]])  # Sharpening kernel
+    return cv2.filter2D(image, -1, kernel)
 
-def save_image(output_dir, image, name):
-    """
-    Saves the image to the specified directory with the given name.
-    """
-    os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, name)
-    cv2.imwrite(output_path, image)
-    return output_path
+# Start of execution
+filename = sys.argv[1] if len(sys.argv) > 1 else input("Please provide the image filename: ")
 
-if __name__ == "__main__":
-    if len(sys.argv) < 5:
-        print("Error: Please provide a feature, width, height, and image URL or path.")
-        sys.exit(1)
+# Load the image
+image = cv2.imread(filename)
 
-    # Parse arguments
-    feature = sys.argv[1]
-    try:
-        width = int(sys.argv[2])
-        height = int(sys.argv[3])
-    except ValueError:
-        print("Error: Width and height must be integers.")
-        sys.exit(1)
+# Check if the image was successfully loaded
+if image is None:
+    print("Error: Could not load image.")
+    sys.exit(1)
 
-    filename = sys.argv[4]
+# Enhance contrast
+contrast_enhanced_image = enhance_contrast(image)
 
-    # Validate the feature
-    if feature != "resize":
-        print("Error: This script only supports the 'resize' feature.")
-        sys.exit(1)
+# Sharpen the image
+sharpened_image = sharpen_image(contrast_enhanced_image)
 
-    # Load image from URL or local path
-    if filename.startswith("http"):
-        image = download_image_from_url(filename)
-    else:
-        print(f"Loading image from file: {filename}")
-        image = cv2.imread(filename)
-        if image is None:
-            print(f"Error: Could not load image from '{filename}'.")
-            sys.exit(1)
+# Ensure the "enhanced_output" directory exists
+output_dir = "enhanced_output"
+os.makedirs(output_dir, exist_ok=True)
 
-    # Resize image
-    try:
-        resized_image = resize_image(image, width, height)
-        output_path = save_image("edited_images", resized_image, f"resized_{os.path.basename(filename)}")
-        print(f"Resized image saved as '{output_path}'")
-    except Exception as e:
-        print(f"Error during resizing or saving: {e}")
-        sys.exit(1)
+# Generate output path
+output_path = os.path.join(output_dir, f"enhanced_{os.path.basename(filename)}")
+
+# Save the enhanced image
+cv2.imwrite(output_path, sharpened_image)
+
+print(f"Enhanced image saved as '{output_path}'")
