@@ -3,12 +3,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './Home';
 import Sketching from './Sketching';
 import Resize from './Resize';
-import PDF from './PDF';
+import Pdf from './Pdf';
 import Grayscale from './Grayscale';
 import Enhance from './Enhance';
 import RemoveBackground from './RemoveBackground';
 import BackgroundBlur from './BackgroundBlur';
-import Blackandwhite from './Blackandwhite';
+import Mirror from './Mirror';
 
 
 function App() {
@@ -25,8 +25,8 @@ function App() {
           <Route path='/Resize/uploads/:filename' element={<Resize />} />
 
           {/* Path for Image to PDF tool */}
-          <Route path='/ImageToPDF' element={<PDF />} />
-          <Route path='/ImageToPDF/uploads/:filename' element={<PDF />} />
+          <Route path='/Pdf' element={<Pdf />} />
+          <Route path='/Pdf/uploads/:filename' element={<Pdf/>} />
 
           {/* Path for Image Grayscale tool */}
           <Route path='/Grayscale' element={<Grayscale />} />
@@ -49,8 +49,8 @@ function App() {
           <Route path='/Enhance/uploads/:filename' element={<Enhance />} />
 
           {/* Path for Enhance tool */}
-          <Route path='/Blackandwhite' element={<Blackandwhite />} />
-          <Route path='/Blackandwhite/uploads/:filename' element={<Blackandwhite/>} />
+          <Route path='/Mirror' element={<Mirror />} />
+          <Route path='/Mirror/uploads/:filename' element={<Mirror/>} />
 
         </Routes>
       </BrowserRouter>

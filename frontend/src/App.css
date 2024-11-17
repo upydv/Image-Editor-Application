@@ -7,7 +7,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color:aquamarine;
+  background-color:rgb(33, 12, 4);
 }
 
 .container {
@@ -71,6 +71,11 @@ body {
 a {
   text-decoration: none; /* Removes underline */
   color: inherit;        /* Inherits the color from the parent */
+}
+.black-line {
+  border: none; /* Removes default styling */
+  border-top: 2px solid black; /* Black line with a thickness of 2px */
+  margin: 20px 0; /* Adds vertical spacing */
 }
 
 
